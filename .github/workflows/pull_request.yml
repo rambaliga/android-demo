@@ -30,7 +30,7 @@ jobs:
         name: test-report
         path: build/reports/tests/testReleaseUnitTest/index.html
 
-    - name: Run unit tests
+    - name: Run Build
       run: ./gradlew bundleRelease
         
 
