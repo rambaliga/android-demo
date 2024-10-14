@@ -5,7 +5,7 @@ on:
   branches: [main]
 
 jobs:
- test:
+ build:
    runs-on: ubuntu-latest
 
    steps:
@@ -28,7 +28,11 @@ jobs:
       uses: actions/upload-artifact@v4.4.3
       with:
         name: test-report
-        path: build/reports/tests/test/index.html
+        path: build/reports/tests/testReleaseUnitTest/index.html
+
+    - name: Run unit tests
+      run: ./gradlew bundleRelease
+        
 
      
    
