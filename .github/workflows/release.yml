@@ -3,6 +3,8 @@ name: Deploy to Playstore
 on:
  push:
    branches: [main]
+ pull_request:
+   branches: [main]
 
 jobs:
    test:
@@ -26,7 +28,7 @@ jobs:
 
    distribute:
       name: Distribute bundle to Google Play
-      #needs: test
+      needs: test
       runs-on: ubuntu-latest
 
       steps:
