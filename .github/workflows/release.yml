@@ -28,18 +28,18 @@ jobs:
 
    distribute:
       name: Distribute bundle to Google Play
-      needs: test
+      #needs: test
       runs-on: ubuntu-latest
 
       steps:
-       - uses: actions/checkout@v4
+      #  - uses: actions/checkout@v4
 
-       - name: Setup JDK 17
-         uses: actions/setup-java@v4
-         with:
-          distribution: 'temurin'
-          java-version: 17
-          cache: 'gradle'
+      #  - name: Setup JDK 17
+      #    uses: actions/setup-java@v4
+      #    with:
+      #     distribution: 'temurin'
+      #     java-version: 17
+      #     cache: 'gradle'
 
        - name: Version Bump
          uses: chkfung/android-version-actions@v1.2.3
@@ -47,23 +47,23 @@ jobs:
            gradlePath: app/build.gradle.kts
            versionCode: ${{ github.run_number }}
 
-       - name: Assemble Release Bundle
-         run: ./gradlew bundleRelease
+       # - name: Assemble Release Bundle
+       #   run: ./gradlew bundleRelease
 
-       - name: Sign Release
-         uses: r0adkll/sign-android-release@v1
-         with:
-          releaseDirectory: app/build/outputs/bundle/release
-          signingKeyBase64: ${{ secrets.KEYSTORE }}
-          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
-          alias: ${{ secrets.KEY_ALIAS }}
-          keyPassword: ${{ secrets.ANDROID_DEVS_ALIAS_PASSWORD }}
+       # - name: Sign Release
+       #   uses: r0adkll/sign-android-release@v1
+       #   with:
+       #    releaseDirectory: app/build/outputs/bundle/release
+       #    signingKeyBase64: ${{ secrets.KEYSTORE }}
+       #    keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+       #    alias: ${{ secrets.KEY_ALIAS }}
+       #    keyPassword: ${{ secrets.ANDROID_DEVS_ALIAS_PASSWORD }}
           
-       - name: Upload signed aab
-         uses: actions/upload-artifact@v4.4.0
-         with:
-          name: signed-aab
-          path: app/build/outputs/bundle/release/app-release.aab
+       # - name: Upload signed aab
+       #   uses: actions/upload-artifact@v4.4.0
+       #   with:
+       #    name: signed-aab
+       #    path: app/build/outputs/bundle/release/app-release.aab
 
        # - name: Setup Authorization with Google Play Store
        #   run: echo '${{ secrets.PLAY_AUTH_JSON }}' > service_account.json
@@ -77,3 +77,15 @@ jobs:
        #    track: 'internal'
        #    status: 'completed'
        #    whatsNewDirectory: whatsNew/
+
+       - name: Determine Email Content
+         run: |
+          if ${{ github.event.workflow_run.conclusion == 'success' }} ; then
+            echo "subject=Release Workflow Completed" >> $GITHUB_ENV
+            echo "body=The release workflow has been completed successfully." >> $GITHUB_ENV
+          else
+            echo "subject=Release Workflow Failed" >> $GITHUB_ENV
+            echo "body=The release workflow has failed. Please check the logs." >> $GITHUB_ENV
+          fi
+
+       
