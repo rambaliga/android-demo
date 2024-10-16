@@ -79,15 +79,6 @@ jobs:
        #    status: 'completed'
        #    whatsNewDirectory: whatsNew/
 
-       #- name: Determine Email Content
-       #   id: determine_email_content
-       #   run: |
-       #    if [ "${{ steps.version_bump.outputs.status }}" == "success" ]; then
-       #      echo "subject=Release Workflow Failed" >> $GITHUB_ENV
-       #    else
-       #      echo "subject=Release Workflow Completed" >> $GITHUB_ENV
-       #    fi
-
        - name: Determine Email Content
          run: |
           if [ "${{ steps.version_bump.outcome }}" == "success" ]; then
@@ -99,8 +90,18 @@ jobs:
           fi
 
        - name: Send Email Notification
+         #uses: dawidd6/action-send-mail@v3
+         # with:
+         #  smtp-server: smtp.example.com
+         #  smtp-port: 587
+         #  smtp-username: ${{ secrets.SMTP_USERNAME }}
+         #  smtp-password: ${{ secrets.SMTP_PASSWORD }}
+         #  from: sender@example.com
+         #  to: recipient1@example.com,recipient2@example.com
+         #  subject: ${{ env.subject }}
+         #  body: ${{ env.body }}
          run: |
-          echo "Subject: ${{ env.subject }}"
-          echo "Body: ${{ env.body }}"
+          echo "${{ env.subject }}"
+          echo "${{ env.body }}"
 
        
