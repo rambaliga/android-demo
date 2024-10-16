@@ -47,13 +47,6 @@ jobs:
          with:
            gradlePath: app/build.gradle.kts
            versionCode: ${{ github.run_number }}
-           run: |
-            if [ $? -eq 0 ]; then
-              echo "status=success" >> $GITHUB_ENV
-            else
-              echo "status=failure" >> $GITHUB_ENV
-              exit 1  # Exit with a non-zero status to indicate failure
-            fi
 
        # - name: Assemble Release Bundle
        #   run: ./gradlew bundleRelease
@@ -87,11 +80,17 @@ jobs:
        #    whatsNewDirectory: whatsNew/
 
        - name: Determine Email Content
+         id: determine_email_content
          run: |
-          if ${{ steps.version_bump.outputs.status == 'failed' }} ; then
-            echo "subject=Release Workflow Failed" 
+          if [ "${{ steps.version_bump.outputs.status }}" == "failed" ]; then
+            echo "subject=Release Workflow Failed" >> $GITHUB_ENV
           else
-            echo "subject=Release Workflow Completed"             
+            echo "subject=Release Workflow Completed" >> $GITHUB_ENV
           fi
+
+       - name: Send Email Notification
+         run: |
+          echo "Subject: ${{ env.subject }}"
+          echo "Body: Your email body goes here."
 
        
