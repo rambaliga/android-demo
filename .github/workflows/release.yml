@@ -79,26 +79,26 @@ jobs:
           status: 'completed'
           whatsNewDirectory: whatsNew/
 
-       - name: Determine Email Content
-         run: |
-          if [ "${{ steps.version_bump.outcome }}" == "success" ]; then
-            echo "subject=Release Workflow Completed" >> $GITHUB_ENV
-            echo "body=The release workflow has been completed successfully." >> $GITHUB_ENV
-          else
-            echo "subject=Release Workflow Failed" >> $GITHUB_ENV
-            echo "body=The release workflow has failed. Please check the logs." >> $GITHUB_ENV
-          fi
+       # - name: Determine Email Content
+       #   run: |
+       #    if [ "${{ steps.version_bump.outcome }}" == "success" ]; then
+       #      echo "subject=Release Workflow Completed" >> $GITHUB_ENV
+       #      echo "body=The release workflow has been completed successfully." >> $GITHUB_ENV
+       #    else
+       #      echo "subject=Release Workflow Failed" >> $GITHUB_ENV
+       #      echo "body=The release workflow has failed. Please check the logs." >> $GITHUB_ENV
+       #    fi
 
-       - name: Send Email Notification
-         uses: dawidd6/action-send-mail@v3
-         with:
-           smtp-server: smtp.example.com
-           smtp-port: 587
-           smtp-username: ${{ secrets.SMTP_USERNAME }}
-           smtp-password: ${{ secrets.SMTP_PASSWORD }}
-           from: sender@example.com
-           to: recipient1@example.com,recipient2@example.com
-           subject: ${{ env.subject }}
-           body: ${{ env.body }}
+       # - name: Send Email Notification
+       #   uses: dawidd6/action-send-mail@v3
+       #   with:
+       #     smtp-server: smtp.example.com
+       #     smtp-port: 587
+       #     smtp-username: ${{ secrets.SMTP_USERNAME }}
+       #     smtp-password: ${{ secrets.SMTP_PASSWORD }}
+       #     from: sender@example.com
+       #     to: recipient1@example.com,recipient2@example.com
+       #     subject: ${{ env.subject }}
+       #     body: ${{ env.body }}
 
        
