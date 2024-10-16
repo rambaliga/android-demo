@@ -47,6 +47,13 @@ jobs:
          with:
            gradlePath: app/build.gradle.kts
            versionCode: ${{ github.run_number }}
+           run: |
+            if [ $? -eq 0 ]; then
+              echo "status=success" >> $GITHUB_ENV
+            else
+              echo "status=failure" >> $GITHUB_ENV
+              exit 1  # Exit with a non-zero status to indicate failure
+            fi
 
        # - name: Assemble Release Bundle
        #   run: ./gradlew bundleRelease
