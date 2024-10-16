@@ -82,7 +82,7 @@ jobs:
        - name: Determine Email Content
          id: determine_email_content
          run: |
-          if [ "${{ steps.version_bump.outputs.status }}" == "failed" ]; then
+          if [ "${{ steps.version_bump.outputs.status }}" == "success" ]; then
             echo "subject=Release Workflow Failed" >> $GITHUB_ENV
           else
             echo "subject=Release Workflow Completed" >> $GITHUB_ENV
