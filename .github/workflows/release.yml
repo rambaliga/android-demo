@@ -81,10 +81,10 @@ jobs:
 
        - name: Determine Email Content
          run: |
-          if ${{ steps.version_bump.outputs.status == 'success' }} ; then
-            echo "subject=Release Workflow Completed" 
+          if ${{ steps.version_bump.outputs.status == 'failed' }} ; then
+            echo "subject=Release Workflow Failed" 
           else
-            echo "subject=Release Workflow Failed"             
+            echo "subject=Release Workflow Completed"             
           fi
 
        
